@@ -66,27 +66,45 @@ import { test } from './test.js'
 // const originalUrl =
 //     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Barrie?unitGroup=us&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json'
 
-// Notes: Review of Classes
-
-// public instance fields are recreated on every instance (use these if each instance has its own unique data)
-// static fields only exist on the class, but can be accessed on instances (use these if the data used throughout the class doesn't change).
-
 class fetchWeatherData {
     static baseUrl =
         'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
+
     static paramsObj = {
         unitGroup: 'metric',
         key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
         contentType: 'json',
     }
-    // in order to call a static method orr property within another static method of the same class, you can use the <this> keyword
+
     static params = new URLSearchParams(this.paramsObj)
+
+    static testUrl = `${this.baseUrl}London,CA?${this.params}`
 
     static test() {
         console.log(this.params)
         console.log(this.paramsObj)
-        console.log(`${this.baseUrl}Ottawa?${this.params}`)
+        console.log(this.testUrl)
     }
+
+    static async fetch_CurrentWeather() {
+        // fetchData.getLocation
+        try {
+            const response = await fetch(this.testUrl, { mode: 'cors' })
+            const jsonData = await response.json()
+            console.log(jsonData)
+            return jsonData
+        } catch (error) {
+            console.log('Fetch failed', error)
+        }
+    }
+
+    // TODO: If you want to include local time, need to use the url that is updated by minute
+    // or see if there is a public api for timezones
+
+    // weather object keys:
+
+    // function async getJsonData()
+    // return await fetch_CurrentWeather()
 
     // function fetch_CurrentWeather(location)
     // fetch response
@@ -102,14 +120,47 @@ class fetchWeatherData {
 }
 
 fetchWeatherData.test()
+fetchWeatherData.fetch_CurrentWeather()
 
-// Research links:
+// Notes and Research links:
+
+// public instance fields are recreated on every instance (use these if each instance has its own unique data)
+
+// static fields only exist on the class, but can be accessed on instances (use these if the data used throughout the class doesn't change).
 
 // Async methods
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions
 
-// Use the <this> keyword to access static properties in a class
+// (1) in order to call a static method or property within another static method of the same class, you can use the <this> keyword
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static
+
+// _________________________________________________
+
+// Pseudocode - Data obj constructor
+
+// class weatherData
+
+// function isolateData()
+// jsonData = fetchWeatherData.getJsonData
+// use .find() method to access the following keys:
+// jsonData.currentConditions.conditions
+// jsonData.currentConditions.icon
+// jsonData.currentConditions.sunrise
+// jsonData.currentConditions.sunset
+// jsonData.currentConditions.temp
+// jsonData.currentConditions.precip
+// jsonData.currentConditions.precipprob
+// jsonData.currentConditions.preciptype
+// jsonData.alerts
+// jsonData.description
+// Use these to calculate the time zone
+// jsonData.timezone
+
+// Location: city, country
+
+// Local time
+
+// Alerts??
 
 // _________________________________________________
 
