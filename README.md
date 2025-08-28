@@ -2,7 +2,7 @@
 
 Instructions:
 
-[] Set up a blank HTML document with the appropriate links to your JavaScript and CSS files.
+[x] Set up a blank HTML document with the appropriate links to your JavaScript and CSS files.
 
 [] Write the functions that hit the API. You’re going to want functions that can take a location and return the weather data for that location. For now, just console.log() the information.
 
@@ -51,3 +51,8 @@ ESLintrc vs. flat config:
 https://eslint.org/blog/2022/08/new-config-system-part-2/
 
 https://allalmohamedlamine.medium.com/eslint-flat-config-and-new-system-an-ultimate-deep-dive-2023-46aa151cbf2b
+
+Use git diff to view changes before committing:
+https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_git_diff_staged
+
+https://git-scm.com/docs/git-diff
