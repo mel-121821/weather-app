@@ -71,38 +71,45 @@ import { test } from './test.js'
 // public instance fields are recreated on every instance (use these if each instance has its own unique data)
 // static fields only exist on the class, but can be accessed on instances (use these if the data used throughout the class doesn't change).
 
-class fetchWeatherData {}
+class fetchWeatherData {
+    static baseUrl =
+        'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
+    static paramsObj = {
+        unitGroup: 'metric',
+        key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
+        contentType: 'json',
+    }
+    // in order to call a static method orr property within another static method of the same class, you can use the <this> keyword
+    static params = new URLSearchParams(this.paramsObj)
 
-const baseUrl =
-    'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
+    static test() {
+        console.log(this.params)
+        console.log(this.paramsObj)
+        console.log(`${this.baseUrl}Ottawa?${this.params}`)
+    }
 
-const paramsObj = {
-    unitGroup: 'metric',
-    key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
-    contentType: 'json',
+    // function fetch_CurrentWeather(location)
+    // fetch response
+    // convert to json
+    // check for errors
+    // return obj with the desired data
+
+    // function fetch_7DayForcast(location)
+    // fetch response
+    // convert to json
+    // check for errors
+    // return obj with the desired data
 }
-const defaultLocation = 'Ottawa?'
-const params = new URLSearchParams(paramsObj)
 
-console.log(`${baseUrl}${defaultLocation}${params}`)
-
-// Creating an obj - use class??
-// function fetch_CurrentWeather(location)
-// fetch response
-// convert to json
-// check for errors
-// return obj with the desired data
-
-// function fetch_7DayForcast(location)
-// fetch response
-// convert to json
-// check for errors
-// return obj with the desired data
+fetchWeatherData.test()
 
 // Research links:
 
 // Async methods
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions
+
+// Use the <this> keyword to access static properties in a class
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static
 
 // _________________________________________________
 
@@ -164,3 +171,13 @@ console.log(`${baseUrl}${defaultLocation}${params}`)
 // TODO: Research dynamic imports for info on how to implement
 // function emojiHandler()
 // ???
+
+// _________________________________________________
+
+// Pseudocode - Event Handler
+
+// input.addEventListener(submit, () =>
+// fetchData.setLocation
+
+// toggle.addEventListener(click, () =>
+// fetchData.setUnits)
