@@ -1,6 +1,7 @@
-// index.js
+// Weather App - index.js
 
 // Instructions:
+
 // 1. Set up a blank HTML document with the appropriate links to your JavaScript and CSS files.
 
 // 2. Write the functions that hit the API. You’re going to want functions that can take a location and return the weather data for that location. For now, just console.log() the information.
@@ -18,8 +19,14 @@
 
 // 8. Push to GitHub and share your solution!
 
+// _________________________________________________
+
+// Imports
+
 import './styles.css'
 import { test } from './test.js'
+
+// _________________________________________________
 
 // Pseudocode - Desired data:
 
@@ -52,10 +59,19 @@ import { test } from './test.js'
 // ...etc...
 // }
 
-// Pseudocode - Url params
+// _________________________________________________
 
-const originalUrl =
-    'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Barrie?unitGroup=us&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json'
+// Pseudocode - Fetch class
+
+// const originalUrl =
+//     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Barrie?unitGroup=us&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json'
+
+// Notes: Review of Classes
+
+// public instance fields are recreated on every instance (use these if each instance has its own unique data)
+// static fields only exist on the class, but can be accessed on instances (use these if the data used throughout the class doesn't change).
+
+class fetchWeatherData {}
 
 const baseUrl =
     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
@@ -65,19 +81,12 @@ const paramsObj = {
     key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
     contentType: 'json',
 }
-
-const params = new URLSearchParams(paramsObj)
 const defaultLocation = 'Ottawa?'
+const params = new URLSearchParams(paramsObj)
 
 console.log(`${baseUrl}${defaultLocation}${params}`)
 
-// Pseudocode - Fn()s:
-
-// function setDefault()
-//  choose default location
-//  call fetch_CurrentWeather(location)
-//  call fetch_7DayForecast(location)
-
+// Creating an obj - use class??
 // function fetch_CurrentWeather(location)
 // fetch response
 // convert to json
@@ -90,18 +99,68 @@ console.log(`${baseUrl}${defaultLocation}${params}`)
 // check for errors
 // return obj with the desired data
 
-// function toggleUnits()
+// Research links:
+
+// Async methods
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions
+
+// _________________________________________________
+
+// Pseudocode - Init class
+
+// function initRender()
+//  call fetch_CurrentWeather(location)
+//  call fetch_7DayForecast(location)
+
+// _________________________________________________
+
+// Pseudocode - Get/set info class
+
+// let units = "metric"
+// let location = "Ottawa"
+
+// function getUnits()
+// return units
+
+// function setUnits()
 // ternary statement - if F ? C : F
 
-// function updateDisplay()
-// have subscribed to return of the obj
-// call fns that manipulate the DOM
+// function getLocation()
+// return location
+
+// function setLocation(input) {
+//     location = `${String(input).charAt(0).toUpperCase() + String(input.slice(1).toLowerCase())}?`
+//     console.log(location)
+// }
+
+// _________________________________________________
+
+// Pseudocode - Pubsub class
 
 // function pubsub()
 // copy from todo
 
-// Pseudocode - DOM fn()s
+// _________________________________________________
+
+// Pseudocode - DOM class
+
+// function updateDisplay()
+// have subscribed to return of the obj
+// call all fns that manipulate the DOM
 
 // function setBgImg()
 // get icon name from returned obj
-// use
+// use name of icon to search visual assets obj
+// display corresponding img
+
+// function displayCurrent()
+// get data from currentWeather fetch obj
+// populate display
+
+// function display7DayForcast()
+// get data from 7DayForcast fetch obj
+// populate display
+
+// TODO: Research dynamic imports for info on how to implement
+// function emojiHandler()
+// ???
