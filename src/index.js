@@ -25,6 +25,7 @@
 
 import './styles.css'
 import { pubSub } from './pubsub.js'
+import { requestHandler } from './request-handler.js'
 
 // _________________________________________________
 
@@ -79,6 +80,8 @@ class fetchWeather {
 
     static params = new URLSearchParams(this.paramsObj)
 
+    static testUrl = `${this.baseUrl}${requestHandler.getLocation()}/next7days?${this.params}`
+
     static dataKeys = {
         info: ['resolvedAddress', 'alerts', 'description', 'days'],
         conditions: [
@@ -95,7 +98,6 @@ class fetchWeather {
     }
 
     // TODO: VC doesn't include the country in its data unless you add it yourself. Create a blurb under the input to inform the user
-    static testUrl = `${this.baseUrl}London,UK/next7days?${this.params}`
 
     static test() {
         console.log(this.params)
@@ -118,7 +120,6 @@ class fetchWeather {
 
     static filterWeather_Current(data) {
         const jsonData = data
-        console.log(data)
         const weatherData_CurrentFiltered = {}
         fetchWeather.dataKeys.info.forEach((key) => {
             Object.assign(weatherData_CurrentFiltered, { [key]: jsonData[key] })
@@ -136,7 +137,6 @@ class fetchWeather {
     static filterWeather_7DayForecast(data) {
         const jsonData = data
         const weatherData_7DayFiltered = []
-        console.log(jsonData.days.length)
         for (let i = 1; i < jsonData.days.length; i++) {
             const weatherDay = {}
             fetchWeather.dataKeys.conditions.forEach((key) => {
@@ -180,29 +180,6 @@ pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
 
 // function initRender()
 //  call fetchWeather(location)
-
-// _________________________________________________
-
-// Pseudocode - Get/set info class
-
-// let units = "metric"
-// let location = "Ottawa"
-
-// function getUnits()
-// return units
-
-// function setUnits()
-// ternary statement - if F ? C : F
-
-// function getLocation()
-// return location
-
-// function setLocation(input) {
-//     location = `${String(input).charAt(0).toUpperCase() + String(input.slice(1).toLowerCase())}?`
-//     console.log(location)
-// }
-
-// _________________________________________________
 
 // Pseudocode - Pubsub class
 
