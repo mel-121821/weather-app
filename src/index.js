@@ -24,7 +24,7 @@
 // Imports
 
 import './styles.css'
-import { test } from './test.js'
+import { pubSub } from './pubsub.js'
 
 // _________________________________________________
 
@@ -50,7 +50,6 @@ import { test } from './test.js'
 
 // Pseudocode - My data
 
-// may need to change - depending on how data is provided by VC
 // const visualAssets = {
 // day_sun: ["img", "emoji"],
 // day_rain: ["img", "emoji"],
@@ -66,7 +65,9 @@ import { test } from './test.js'
 // const originalUrl =
 //     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Barrie?unitGroup=us&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json'
 
-class fetchWeatherData {
+// https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Borden%2C%20ON/next7days?unitGroup=metric&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json
+
+class fetchWeather {
     static baseUrl =
         'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 
@@ -78,7 +79,23 @@ class fetchWeatherData {
 
     static params = new URLSearchParams(this.paramsObj)
 
-    static testUrl = `${this.baseUrl}London,CA?${this.params}`
+    static dataKeys = {
+        info: ['resolvedAddress', 'alerts', 'description', 'days'],
+        conditions: [
+            'conditions',
+            'icon',
+            'datetime',
+            'sunrise',
+            'sunset',
+            'temp',
+            'precip',
+            'precipprob',
+            'preciptype',
+        ],
+    }
+
+    // TODO: VC doesn't include the country in its data unless you add it yourself. Create a blurb under the input to inform the user
+    static testUrl = `${this.baseUrl}London,UK/next7days?${this.params}`
 
     static test() {
         console.log(this.params)
@@ -86,41 +103,64 @@ class fetchWeatherData {
         console.log(this.testUrl)
     }
 
-    static async fetch_CurrentWeather() {
+    static async fetchWeather() {
         // fetchData.getLocation
         try {
             const response = await fetch(this.testUrl, { mode: 'cors' })
             const jsonData = await response.json()
-            console.log(jsonData)
-            return jsonData
+            pubSub.emit('fetchData', jsonData)
         } catch (error) {
             console.log('Fetch failed', error)
         }
     }
 
+    // TODO: instead of having filter fn()s call fetchWeather, have each one listen with pubsub and accept the same data
+
+    static filterWeather_Current(data) {
+        const jsonData = data
+        console.log(data)
+        const weatherData_CurrentFiltered = {}
+        fetchWeather.dataKeys.info.forEach((key) => {
+            Object.assign(weatherData_CurrentFiltered, { [key]: jsonData[key] })
+        })
+        fetchWeather.dataKeys.conditions.forEach((key) => {
+            Object.assign(weatherData_CurrentFiltered, {
+                [key]: jsonData.currentConditions[key],
+            })
+        })
+        console.log('Object of current weather:')
+        console.log(weatherData_CurrentFiltered)
+        return weatherData_CurrentFiltered
+    }
+
+    static filterWeather_7DayForecast(data) {
+        const jsonData = data
+        const weatherData_7DayFiltered = []
+        console.log(jsonData.days.length)
+        for (let i = 1; i < jsonData.days.length; i++) {
+            const weatherDay = {}
+            fetchWeather.dataKeys.conditions.forEach((key) => {
+                Object.assign(weatherDay, {
+                    [key]: jsonData.days[i][key],
+                })
+            })
+            weatherData_7DayFiltered.push(weatherDay)
+        }
+        console.log('Array of 7 day forcast:')
+        console.log(weatherData_7DayFiltered)
+        return weatherData_7DayFiltered
+    }
+
     // TODO: If you want to include local time, need to use the url that is updated by minute
     // or see if there is a public api for timezones
-
-    // weather object keys:
-
-    // function async getJsonData()
-    // return await fetch_CurrentWeather()
-
-    // function fetch_CurrentWeather(location)
-    // fetch response
-    // convert to json
-    // check for errors
-    // return obj with the desired data
-
-    // function fetch_7DayForcast(location)
-    // fetch response
-    // convert to json
-    // check for errors
-    // return obj with the desired data
+    // ^ Decided against doing this
 }
 
-fetchWeatherData.test()
-fetchWeatherData.fetch_CurrentWeather()
+fetchWeather.test()
+fetchWeather.fetchWeather()
+
+pubSub.on('fetchData', fetchWeather.filterWeather_Current)
+pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
 
 // Notes and Research links:
 
@@ -136,39 +176,10 @@ fetchWeatherData.fetch_CurrentWeather()
 
 // _________________________________________________
 
-// Pseudocode - Data obj constructor
-
-// class weatherData
-
-// function isolateData()
-// jsonData = fetchWeatherData.getJsonData
-// use .find() method to access the following keys:
-// jsonData.currentConditions.conditions
-// jsonData.currentConditions.icon
-// jsonData.currentConditions.sunrise
-// jsonData.currentConditions.sunset
-// jsonData.currentConditions.temp
-// jsonData.currentConditions.precip
-// jsonData.currentConditions.precipprob
-// jsonData.currentConditions.preciptype
-// jsonData.alerts
-// jsonData.description
-// Use these to calculate the time zone
-// jsonData.timezone
-
-// Location: city, country
-
-// Local time
-
-// Alerts??
-
-// _________________________________________________
-
 // Pseudocode - Init class
 
 // function initRender()
-//  call fetch_CurrentWeather(location)
-//  call fetch_7DayForecast(location)
+//  call fetchWeather(location)
 
 // _________________________________________________
 
@@ -194,9 +205,6 @@ fetchWeatherData.fetch_CurrentWeather()
 // _________________________________________________
 
 // Pseudocode - Pubsub class
-
-// function pubsub()
-// copy from todo
 
 // _________________________________________________
 
