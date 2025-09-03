@@ -99,7 +99,7 @@ class fetchWeather {
 
     static getParams() {
         const paramsObj = {
-            unitGroup: requestHandler.getUnits(),
+            unitGroup: requestHandler.units,
             // unitGroup: 'metric',
             key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
             contentType: 'json',
@@ -109,7 +109,7 @@ class fetchWeather {
     }
 
     static getUrl() {
-        return `${this.baseUrl}${requestHandler.getLocation()}/next7days?${this.getParams()}`
+        return `${this.baseUrl}${requestHandler.location}/next7days?${this.getParams()}`
     }
 
     // TODO: VC doesn't include the country in its data unless you add it yourself. Create a blurb under the input to inform the user
@@ -118,7 +118,7 @@ class fetchWeather {
         // console.log(this.params)
         // console.log(this.paramsObj)
         // console.log(this.testUrl)
-        console.log(requestHandler.getUnits())
+        console.log(requestHandler.units)
     }
 
     static async fetchData() {
@@ -205,12 +205,14 @@ pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
 
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    requestHandler.setLocation(searchInput.value)
-    requestHandler.getLocation()
+    // Note: will throw an error if you call requestHandler.location(inputVal) because getters and setters behave like variables, not functions. To assign a new value to location, see line below vvv
+    requestHandler.location = searchInput.value
+    requestHandler.location
     fetchWeather.fetchData()
 })
 
 unitToggle.addEventListener('click', () => {
     requestHandler.setUnits()
     domHandler.changeUnits(unitDisplay)
+    fetchWeather.fetchData()
 })
