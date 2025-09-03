@@ -3,23 +3,27 @@
 class requestHandler {
     // (DONE) units already exist in searchParams - may move getter/setter to fetchWeather class or have setter set the units from here
 
-    static units = 'metric'
+    static currentUnits = 'metric'
 
-    static location = 'Ottawa'
+    static currentLocation = 'Ottawa'
 
-    static getUnits = () => this.units
-
-    static setUnits() {
-        this.units = this.units === 'metric' ? 'us' : 'metric'
-        console.log(this.units)
+    static get units() {
+        return this.currentUnits
     }
 
-    static getLocation = () => this.location
+    static setUnits() {
+        this.currentUnits = this.currentUnits === 'metric' ? 'us' : 'metric'
+        console.log(this.currentUnits)
+    }
 
-    static setLocation(input) {
+    static get location() {
+        return this.currentLocation
+    }
+
+    static set location(input) {
         // TODO: fix to accept city/provice/country
-        this.location = `${String(input).charAt(0).toUpperCase() + String(input.slice(1).toLowerCase())}`
-        console.log(this.location)
+        this.currentLocation = `${String(input).charAt(0).toUpperCase() + String(input.slice(1).toLowerCase())}`
+        console.log(this.currentLocation)
     }
 }
 
