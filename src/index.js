@@ -82,21 +82,6 @@ class fetchWeather {
     static baseUrl =
         'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 
-    static paramsObj = {
-        unitGroup: requestHandler.getUnits(),
-        // unitGroup: 'metric',
-        key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
-        contentType: 'json',
-    }
-
-    static params = new URLSearchParams(this.paramsObj)
-
-    static testUrl = `${this.baseUrl}${requestHandler.getLocation()}/next7days?${this.params}`
-
-    static getUrl() {
-        return `${this.baseUrl}${requestHandler.getLocation()}/next7days?${this.params}`
-    }
-
     static dataKeys = {
         info: ['resolvedAddress', 'alerts', 'description', 'days'],
         conditions: [
@@ -110,6 +95,21 @@ class fetchWeather {
             'precipprob',
             'preciptype',
         ],
+    }
+
+    static getParams() {
+        const paramsObj = {
+            unitGroup: requestHandler.getUnits(),
+            // unitGroup: 'metric',
+            key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
+            contentType: 'json',
+        }
+        const params = new URLSearchParams(paramsObj)
+        return params
+    }
+
+    static getUrl() {
+        return `${this.baseUrl}${requestHandler.getLocation()}/next7days?${this.getParams()}`
     }
 
     // TODO: VC doesn't include the country in its data unless you add it yourself. Create a blurb under the input to inform the user
