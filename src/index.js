@@ -26,6 +26,7 @@
 import './styles.css'
 import { pubSub } from './pubsub.js'
 import { requestHandler } from './request-handler.js'
+import { domHandler } from './dom-handler.js'
 
 // _________________________________________________
 
@@ -61,6 +62,15 @@ import { requestHandler } from './request-handler.js'
 
 // _________________________________________________
 
+// Global Vars
+
+const searchInput = document.querySelector('#search')
+const searchForm = document.querySelector('form')
+const unitDisplay = document.querySelector('.units span')
+const unitToggle = document.querySelector('#unit-toggle')
+
+// _________________________________________________
+
 // Pseudocode - Fetch class
 
 // const originalUrl =
@@ -73,7 +83,8 @@ class fetchWeather {
         'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 
     static paramsObj = {
-        unitGroup: 'metric',
+        unitGroup: requestHandler.getUnits(),
+        // unitGroup: 'metric',
         key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
         contentType: 'json',
     }
@@ -81,6 +92,10 @@ class fetchWeather {
     static params = new URLSearchParams(this.paramsObj)
 
     static testUrl = `${this.baseUrl}${requestHandler.getLocation()}/next7days?${this.params}`
+
+    static getUrl() {
+        return `${this.baseUrl}${requestHandler.getLocation()}/next7days?${this.params}`
+    }
 
     static dataKeys = {
         info: ['resolvedAddress', 'alerts', 'description', 'days'],
@@ -100,15 +115,16 @@ class fetchWeather {
     // TODO: VC doesn't include the country in its data unless you add it yourself. Create a blurb under the input to inform the user
 
     static test() {
-        console.log(this.params)
-        console.log(this.paramsObj)
-        console.log(this.testUrl)
+        // console.log(this.params)
+        // console.log(this.paramsObj)
+        // console.log(this.testUrl)
+        console.log(requestHandler.getUnits())
     }
 
-    static async fetchWeather() {
-        // fetchData.getLocation
+    static async fetchData() {
+        const url = this.getUrl()
         try {
-            const response = await fetch(this.testUrl, { mode: 'cors' })
+            const response = await fetch(url, { mode: 'cors' })
             const jsonData = await response.json()
             pubSub.emit('fetchData', jsonData)
         } catch (error) {
@@ -116,7 +132,7 @@ class fetchWeather {
         }
     }
 
-    // TODO: instead of having filter fn()s call fetchWeather, have each one listen with pubsub and accept the same data
+    // (DONE) instead of having filter fn()s call fetchWeather, have each one listen with pubsub and accept the same data
 
     static filterWeather_Current(data) {
         const jsonData = data
@@ -157,7 +173,7 @@ class fetchWeather {
 }
 
 fetchWeather.test()
-fetchWeather.fetchWeather()
+fetchWeather.fetchData()
 
 pubSub.on('fetchData', fetchWeather.filterWeather_Current)
 pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
@@ -181,39 +197,20 @@ pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
 // function initRender()
 //  call fetchWeather(location)
 
-// Pseudocode - Pubsub class
-
 // _________________________________________________
-
-// Pseudocode - DOM class
-
-// function updateDisplay()
-// have subscribed to return of the obj
-// call all fns that manipulate the DOM
-
-// function setBgImg()
-// get icon name from returned obj
-// use name of icon to search visual assets obj
-// display corresponding img
-
-// function displayCurrent()
-// get data from currentWeather fetch obj
-// populate display
-
-// function display7DayForcast()
-// get data from 7DayForcast fetch obj
-// populate display
-
-// TODO: Research dynamic imports for info on how to implement
-// function emojiHandler()
-// ???
 
 // _________________________________________________
 
 // Pseudocode - Event Handler
 
-// input.addEventListener(submit, () =>
-// fetchData.setLocation
+searchForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    requestHandler.setLocation(searchInput.value)
+    requestHandler.getLocation()
+    fetchWeather.fetchData()
+})
 
-// toggle.addEventListener(click, () =>
-// fetchData.setUnits)
+unitToggle.addEventListener('click', () => {
+    requestHandler.setUnits()
+    domHandler.changeUnits(unitDisplay)
+})
