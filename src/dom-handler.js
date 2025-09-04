@@ -5,12 +5,35 @@
 import { requestHandler } from './request-handler'
 // import img from '../img/partly-cloudy-day.jpg'
 
+const allUnitDisplays = document.querySelectorAll('span.units')
 const main = document.querySelector('.main')
+const currentTemp = document.querySelector('.temp > p > span.val')
+const currentLocation = document.querySelector('.location')
+const currentDescription = document.querySelector('.description')
 
 class domHandler {
-    // TODO: Create fn to read value of icon, call dynamic import with that value and assign resulting image to bg
+    static changeUnits() {
+        const units = requestHandler.units
+        console.log(allUnitDisplays)
+        if (units === 'metric') {
+            for (const disp of allUnitDisplays) {
+                disp.innerHTML = '&#8451;'
+            }
+        } else {
+            for (const disp of allUnitDisplays) {
+                disp.innerHTML = '&#8457;'
+            }
+        }
+    }
 
-    // pseudocode
+    // Note: assigning a string to textConten erases the existing content of hthe element, including the span.
+
+    static displayCurrent(currentData) {
+        console.log(currentTemp)
+        currentTemp.textContent = currentData.temp
+        currentLocation.firstChild.textContent = currentData.resolvedAddress
+        currentDescription.firstChild.textContent = currentData.description
+    }
 
     static async updateBgImg(currentData) {
         const iconName = currentData.icon
@@ -23,15 +46,6 @@ class domHandler {
             console.log(`404 ${iconName} not found. Use default image instead`)
             const defaultImg = await import(`../img/fog.jpg`)
             main.style.backgroundImage = `url("${defaultImg.default}")`
-        }
-    }
-
-    static changeUnits(unitDisplay) {
-        const units = requestHandler.units
-        if (units === 'metric') {
-            unitDisplay.innerHTML = '&#8451;'
-        } else {
-            unitDisplay.innerHTML = '&#8457;'
         }
     }
 }
