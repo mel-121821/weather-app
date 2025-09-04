@@ -36,29 +36,11 @@ import { domHandler } from './dom-handler.js'
 // Type: (ie. partly cloudy, sunny, rainy, etc.)
 // Location: city, country
 // Temp: F/C
-// Local time
 // Sunrise/set ??
 // Chance of precipitation
 // Alerts??
 // Icon
 // (need to create a notice if no data is present for a given category)
-
-// For 7 day display: accuracy by day
-// Type: (ie. partly cloudy, sunny, rainy, etc.)
-// Temp: F/C
-// Chance of precipitation
-// Icon
-// Note: on main display (current) would like the data to be accurate by hour. For the rest of the week, would like the per day setting - investigate if 2 queries are needed for this - may ammend this goal
-
-// Pseudocode - My data
-
-// const visualAssets = {
-// day_sun: ["img", "emoji"],
-// day_rain: ["img", "emoji"],
-// night_clear: ["img", "emoji"],
-// night_rain: ["img", "emoji"]
-// ...etc...
-// }
 
 // _________________________________________________
 
@@ -66,20 +48,17 @@ import { domHandler } from './dom-handler.js'
 
 const searchInput = document.querySelector('#search')
 const searchForm = document.querySelector('form')
-const unitDisplay = document.querySelector('.units span')
 const unitToggle = document.querySelector('#unit-toggle')
-const bgImage = document.querySelector('.main')
 
 // _________________________________________________
 
 // Pseudocode - Fetch class
 
-// const originalUrl =
-// https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Borden%2C%20ON/next7days?unitGroup=metric&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json
-
 class fetchWeather {
     static baseUrl =
         'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
+
+    // Note: sunrise/sunset no longer needed. Day/night indicators are indicated in the icon value: https://www.visualcrossing.com/resources/documentation/weather-api/defining-icon-set-in-the-weather-api/
 
     static dataKeys = {
         info: ['resolvedAddress', 'alerts', 'description', 'days'],
@@ -87,8 +66,6 @@ class fetchWeather {
             'conditions',
             'icon',
             'datetime',
-            'sunrise',
-            'sunset',
             'temp',
             'precip',
             'precipprob',
@@ -99,7 +76,6 @@ class fetchWeather {
     static getParams() {
         const paramsObj = {
             unitGroup: requestHandler.units,
-            // unitGroup: 'metric',
             key: 'V2N5C4KCZ38YRSDW84MDRYRR5',
             contentType: 'json',
         }
@@ -131,44 +107,38 @@ class fetchWeather {
         }
     }
 
-    // (DONE) instead of having filter fn()s call fetchWeather, have each one listen with pubsub and accept the same data
-
     static filterWeather_Current(data) {
         const jsonData = data
-        const weatherData_CurrentFiltered = {}
+        const weatherData_Current = {}
         fetchWeather.dataKeys.info.forEach((key) => {
-            Object.assign(weatherData_CurrentFiltered, { [key]: jsonData[key] })
+            Object.assign(weatherData_Current, { [key]: jsonData[key] })
         })
         fetchWeather.dataKeys.conditions.forEach((key) => {
-            Object.assign(weatherData_CurrentFiltered, {
+            Object.assign(weatherData_Current, {
                 [key]: jsonData.currentConditions[key],
             })
         })
         console.log('Object of current weather:')
-        console.log(weatherData_CurrentFiltered)
-        pubSub.emit('gotCurrentData', weatherData_CurrentFiltered)
+        console.log(weatherData_Current)
+        pubSub.emit('gotCurrentData', weatherData_Current)
     }
 
     static filterWeather_7DayForecast(data) {
         const jsonData = data
-        const weatherData_7DayFiltered = []
+        const weatherData_7DayForecast = []
         for (let i = 1; i < jsonData.days.length; i++) {
-            const weatherDay = {}
+            const day = {}
             fetchWeather.dataKeys.conditions.forEach((key) => {
-                Object.assign(weatherDay, {
+                Object.assign(day, {
                     [key]: jsonData.days[i][key],
                 })
             })
-            weatherData_7DayFiltered.push(weatherDay)
+            weatherData_7DayForecast.push(day)
         }
         console.log('Array of 7 day forcast:')
-        console.log(weatherData_7DayFiltered)
-        pubSub.emit('got7DayData', weatherData_7DayFiltered)
+        console.log(weatherData_7DayForecast)
+        pubSub.emit('got7DayData', weatherData_7DayForecast)
     }
-
-    // TODO: If you want to include local time, need to use the url that is updated by minute
-    // or see if there is a public api for timezones
-    // ^ Decided against doing this
 }
 
 fetchWeather.test()
@@ -178,6 +148,7 @@ pubSub.on('fetchData', fetchWeather.filterWeather_Current)
 pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
 
 pubSub.on('gotCurrentData', domHandler.updateBgImg)
+pubSub.on('gotCurrentData', domHandler.displayCurrent)
 
 // Notes and Research links:
 
@@ -193,15 +164,6 @@ pubSub.on('gotCurrentData', domHandler.updateBgImg)
 
 // _________________________________________________
 
-// Pseudocode - Init class
-
-// function initRender()
-//  call fetchWeather(location)
-
-// _________________________________________________
-
-// _________________________________________________
-
 // Pseudocode - Event Handler
 
 searchForm.addEventListener('submit', (e) => {
@@ -214,6 +176,6 @@ searchForm.addEventListener('submit', (e) => {
 
 unitToggle.addEventListener('click', () => {
     requestHandler.setUnits()
-    domHandler.changeUnits(unitDisplay)
+    domHandler.changeUnits()
     fetchWeather.fetchData()
 })
