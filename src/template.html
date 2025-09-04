@@ -15,8 +15,8 @@
               </form>
             </div>
             <div class="units">
-                <div class="current">
-                    <p>Units: <span>&#8451;</span></p>
+                <div class="unit-display">
+                    <p>Units: <span class="units">&#8451;</span></p>
                 </div>
                 <div class="change">
                   <label class="toggle">
@@ -27,7 +27,35 @@
                 </div>
             </div>
         </div>
-        <div class="main"></div>
+        <div class="main">
+            <div class="current">
+                <!-- Data to display on current view: 
+                temp, resolvedAddress, description,-->
+                <div class="weather-display">
+                    <div class="temp">
+                        <p>
+                            <span class="val"></span>
+                            <span class="units">&#8451;</span>
+                        </p>
+                    </div>
+                    <div class="location"><p></p></div>
+                    <div class="description"><p></p></div>
+                </div>
+            </div>
+            <div class="forcast">
+                <!-- Data to display on current view: 
+                temp, conditions, icon, datetime, precip, precipprob, preciptype -->
+                <div class="weather-display">
+                    <div class="day one"></div>
+                    <div class="day two"></div>
+                    <div class="day three"></div>
+                    <div class="day four"></div>
+                    <div class="day five"></div>
+                    <div class="day six"></div>
+                    <div class="day seven"></div>
+                </div>
+            </div>
+        </div>
         <div class="footer">
             <div class="footer-text">
                 Created by M.e.l.
