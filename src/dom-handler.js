@@ -3,13 +3,31 @@
 // Pseudocode - DOM class
 // TODO: Import reqest-handler
 import { requestHandler } from './request-handler'
+// import img from '../img/partly-cloudy-day.jpg'
 
-const unitDisplay = document.querySelector('.units span')
+const main = document.querySelector('.main')
 
 class domHandler {
-    static changeUnits() {
-        console.log(unitDisplay)
-        const units = requestHandler.getUnits()
+    // TODO: Create fn to read value of icon, call dynamic import with that value and assign resulting image to bg
+
+    // pseudocode
+
+    static async updateBgImg(currentData) {
+        const iconName = currentData.icon
+        console.log(iconName)
+        try {
+            const bgImg = await import(`../img/${iconName}.jpg`)
+            console.log(bgImg.default)
+            main.style.backgroundImage = `url("${bgImg.default}")`
+        } catch {
+            console.log(`404 ${iconName} not found. Use default image instead`)
+            const defaultImg = await import(`../img/fog.jpg`)
+            main.style.backgroundImage = `url("${defaultImg.default}")`
+        }
+    }
+
+    static changeUnits(unitDisplay) {
+        const units = requestHandler.units
         if (units === 'metric') {
             unitDisplay.innerHTML = '&#8451;'
         } else {
