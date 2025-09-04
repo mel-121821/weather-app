@@ -68,14 +68,13 @@ const searchInput = document.querySelector('#search')
 const searchForm = document.querySelector('form')
 const unitDisplay = document.querySelector('.units span')
 const unitToggle = document.querySelector('#unit-toggle')
+const bgImage = document.querySelector('.main')
 
 // _________________________________________________
 
 // Pseudocode - Fetch class
 
 // const originalUrl =
-//     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Barrie?unitGroup=us&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json'
-
 // https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Borden%2C%20ON/next7days?unitGroup=metric&key=V2N5C4KCZ38YRSDW84MDRYRR5&contentType=json
 
 class fetchWeather {
@@ -147,7 +146,7 @@ class fetchWeather {
         })
         console.log('Object of current weather:')
         console.log(weatherData_CurrentFiltered)
-        return weatherData_CurrentFiltered
+        pubSub.emit('gotCurrentData', weatherData_CurrentFiltered)
     }
 
     static filterWeather_7DayForecast(data) {
@@ -164,7 +163,7 @@ class fetchWeather {
         }
         console.log('Array of 7 day forcast:')
         console.log(weatherData_7DayFiltered)
-        return weatherData_7DayFiltered
+        pubSub.emit('got7DayData', weatherData_7DayFiltered)
     }
 
     // TODO: If you want to include local time, need to use the url that is updated by minute
@@ -177,6 +176,8 @@ fetchWeather.fetchData()
 
 pubSub.on('fetchData', fetchWeather.filterWeather_Current)
 pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
+
+pubSub.on('gotCurrentData', domHandler.updateBgImg)
 
 // Notes and Research links:
 
@@ -205,7 +206,7 @@ pubSub.on('fetchData', fetchWeather.filterWeather_7DayForecast)
 
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    // Note: will throw an error if you call requestHandler.location(inputVal) because getters and setters behave like variables, not functions. To assign a new value to location, see line below vvv
+    // Note: will throw an error if you call requestHandler.location(inputVal) because getters and setters behave like variables, not functions. To assign a new value to location, see below
     requestHandler.location = searchInput.value
     requestHandler.location
     fetchWeather.fetchData()
