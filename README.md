@@ -8,7 +8,7 @@ Instructions:
 
 [x] Write the functions that process the JSON data you’re getting from the API and return an object with only the data you require for your app.
 
-[] Set up a form that will let users input their location and will fetch the weather info (still just console.log() it).
+[x] Set up a form that will let users input their location and will fetch the weather info (still just console.log() it).
 
 [] Display the information on your webpage!
 
@@ -23,6 +23,34 @@ Instructions:
 ---
 
 Images:
+
+Name: snow.jpg
+Artist: Aaron Burden
+Url: https://unsplash.com/photos/focused-photo-of-a-snow-flake-5AiWn2U10cw
+
+Name: rain.jpg
+Artist: Lum3n
+Url: https://www.pexels.com/photo/macro-shot-photography-of-water-drops-1028600/
+
+Name: fog.jpg
+Artist: Jenna Anderson
+Url: https://unsplash.com/photos/green-tree-on-brown-field-at-daytime-UylXHkdG42s
+
+Name: fog2.jpg
+Artist: Dominik Hofbauer
+Url: https://unsplash.com/photos/white-and-black-boat-on-water-during-sunset-TueNuRlbHYI
+
+Name: wind.jpg
+Artist: Katarzyna Kos
+Url: https://unsplash.com/photos/wheat-field-under-clear-blue-sky-sCFKb-7K130
+
+Name: cloudy.jpg
+Artist: Barry Simon
+Url: https://unsplash.com/photos/selective-focus-photography-of-gray-clouds-4C6Rp23RjnE
+
+Name: partly-cloudy.jpg
+Artist: Miguel Á. Padriñán
+Url: https://www.pexels.com/photo/white-clouds-on-blue-sky-19670/
 
 ---
 
@@ -59,3 +87,9 @@ Use git diff to view changes before committing:
 https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_git_diff_staged
 
 https://git-scm.com/docs/git-diff
+
+Visual Crossing, all Icon Names:
+https://www.visualcrossing.com/resources/documentation/weather-api/defining-icon-set-in-the-weather-api/
+
+Filter empty values from an array:
+https://stackoverflow.com/questions/19902860/join-strings-with-a-delimiter-only-if-strings-are-not-null-or-empty
