@@ -5,8 +5,9 @@ class requestHandler {
 
     static currentUnits = 'metric'
 
-    static currentLocation = 'Ottawa'
+    static currentLocation = 'Ottawa, ON, Canada'
 
+    // Note: getters/setters behave like variables, not functions. Do not try to call them or you will get an error!
     static get units() {
         return this.currentUnits
     }
@@ -20,9 +21,11 @@ class requestHandler {
         return this.currentLocation
     }
 
-    static set location(input) {
+    static set location(inputs) {
         // TODO: fix to accept city/provice/country
-        this.currentLocation = `${String(input).charAt(0).toUpperCase() + String(input.slice(1).toLowerCase())}`
+        // TODO: add code to handle undefined values
+        console.log(inputs)
+        this.currentLocation = inputs.filter(Boolean).join(', ')
         console.log(this.currentLocation)
     }
 }
