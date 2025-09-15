@@ -7,12 +7,21 @@
     </head>
     <body>
         <div class="header">
+            <div class="date">
+                <p></p>
+            </div>
             <div class="search">
-              <form action="" method="get">
-                <input type="search" id="search" name="search" />
-                <button type="submit">&#128269;</button>
-                <label for="search">City, Province, Country</label>
-              </form>
+                <form action="" method="get">
+                    <div class="location-inputs city">
+                        <input type="text" id="city" name="city" required placeholder="Ottawa"/>
+                        <label for="city">City</label>
+                    </div>
+                    <div class="location-inputs region">
+                        <input type="text" id="region" name="region" required placeholder="ON, Canada"/>
+                        <label for="region">State, province or country</label>  
+                    </div>
+                    <button type="submit">&#128269;</button>
+                </form>
             </div>
             <div class="units">
                 <label class="toggle">
@@ -36,8 +45,20 @@
                             <span class="units">&#8451;</span>
                         </p>
                     </div>
-                    <div class="conditions">
-                        <p></p>
+                    <div class="conditions-wrapper">
+                        <div class="conditions">
+                            <p></p>
+                        </div>
+                        <div class="precip">
+                            <div class="icon">
+                                <img class="svg icon" src="../icon/water-drop.svg" alt="Water drop icon"/>
+                            </div>
+                            <div class="percent">
+                                <p>
+                                    <span class="val"></span><span>%</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="description">
                         <p></p>
@@ -48,7 +69,12 @@
                 <!-- Data to display on current view: 
                 temp, conditions, icon, datetime, precip, precipprob, preciptype -->
                 <div class="weather-display">
-                    <div class="day one"></div>
+                    <div class="day one">
+                        <div class="day-name">
+                            <p></p>
+                        </div>
+                        <div class="temp"></div>
+                    </div>
                     <div class="day two"></div>
                     <div class="day three"></div>
                     <div class="day four"></div>
