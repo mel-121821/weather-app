@@ -158,19 +158,79 @@ html {
     background-color: black;
     color: white;
     display: grid;
-    grid-template-columns: 2fr 1fr 230px;
+    grid-template-columns: 300px 1fr 350px 230px;
     gap: 20px;
 }
 
-.search {
-    grid-area: 1 / 2 / 2 / 3;
+.date {
+    grid-area: 1 / 1 / 2 / 2;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    padding-left: 75px;
+}
+
+.date > p {
+    font-size: 1.2rem;
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+.search {
+    grid-area: 1 / 3 / 2 / 4;
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
+.search form {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 5px;
+    position: relative;
+}
+
+.search .city {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.search .region {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.search .location-inputs {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 8px;
+}
+
+.search input {
+    padding: 3px 7px;
+    border-radius: 10px;
+    font-size: 1rem;
+    align-self: center;
+    width: 100%;
+}
+
+.search button {
+    grid-area: 1 / 2 / 2 / 3;
+    position: absolute;
+    left: 173px;
+    top: 4px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.search label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-left: -4px;
+}
+
 .units {
-    grid-area: 1 / 3 / 2 / 4;
+    grid-area: 1 / 4 / 2 / 5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -195,6 +255,7 @@ html {
 .toggle-switch:after {
     content: '';
 }
+
 .toggle-switch:before {
     display: block;
     background: linear-gradient(to bottom, black 0%, black 100%);
@@ -256,6 +317,8 @@ html {
     padding: 0px 50px 30px 50px;
 }
 
+/*__________Current Weather Display__________*/
+
 .current .weather-display {
     display: grid;
     background-color: black;
@@ -265,41 +328,62 @@ html {
     border-radius: 20px;
 }
 
-.location {
+.current .location {
     grid-area: 1 / 1 / 2 / 2;
     display: flex;
 }
 
-.location > p {
+.current .location > p {
     font-size: 1.5rem;
 }
 
-.temp {
+.current .temp {
     grid-area: 2 / 1 / 3 / 2;
     display: flex;
     border-bottom: 2px solid white;
     align-self: flex-end;
 }
 
-.temp p {
+.current .temp p {
     display: flex;
     gap: 5px;
     font-size: 7rem;
 }
 
-.temp span.units {
+.current .temp span.units {
     font-size: 2rem;
     align-self: flex-start;
 }
 
-.conditions {
+.conditions-wrapper {
     grid-area: 3 / 1 / 4 / 2;
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    font-size: 1.2rem;
 }
 
-.conditions p {
+.conditions {
+    grid-area: 1 / 1 / 2 / 2;
+    display: flex;
+    align-items: flex-end;
     font-size: 2rem;
+}
+
+.precip {
+    grid-area: 1 / 2 / 2 / 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.precip .icon {
+    width: 40px;
+    height: 40px;
+    align-self: flex-end;
+}
+
+.precip .percent {
+    margin-bottom: 18px;
 }
 
 .description {
