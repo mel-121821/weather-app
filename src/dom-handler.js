@@ -2,14 +2,17 @@
 
 // Pseudocode - DOM class
 // TODO: Import reqest-handler
+import { format } from 'date-fns'
 import { requestHandler } from './request-handler'
-// import img from '../img/partly-cloudy-day.jpg'
 
 const allUnitDisplays = document.querySelectorAll('span.units')
 const main = document.querySelector('.main')
+const currentLocation = document.querySelector('.location > p')
+const currentDate = document.querySelector('.date > p')
 const currentTemp = document.querySelector('.temp > p > span.val')
-const currentLocation = document.querySelector('.location')
-const currentDescription = document.querySelector('.description')
+const currentConditions = document.querySelector('.conditions > p')
+const currentPrecip = document.querySelector('.precip .percent .val')
+const currentDescription = document.querySelector('.description > p')
 
 class domHandler {
     static changeUnits() {
@@ -26,17 +29,20 @@ class domHandler {
         }
     }
 
-    // Note: assigning a string to textConten erases the existing content of hthe element, including the span.
+    // Note: assigning a string to textContent erases the existing content of the element, including the span. https://stackoverflow.com/questions/75430221/im-not-seeing-span-tags-in-dom-when-adding-them-via-javascript-loop
 
-    static displayCurrent(currentData) {
+    static displayCurrent(data) {
         console.log(currentTemp)
-        currentTemp.textContent = currentData.temp
-        currentLocation.firstChild.textContent = currentData.resolvedAddress
-        currentDescription.firstChild.textContent = currentData.description
+        currentLocation.textContent = data.resolvedAddress
+        currentTemp.textContent = data.temp
+        currentDate.textContent = domHandler.getCurrentDate()
+        currentConditions.textContent = data.conditions
+        currentPrecip.textContent = data.precip
+        currentDescription.textContent = data.description
     }
 
-    static async updateBgImg(currentData) {
-        const iconName = currentData.icon
+    static async updateBgImg(data) {
+        const iconName = data.icon
         console.log(iconName)
         try {
             const bgImg = await import(`../img/${iconName}.jpg`)
@@ -47,6 +53,12 @@ class domHandler {
             const defaultImg = await import(`../img/fog.jpg`)
             main.style.backgroundImage = `url("${defaultImg.default}")`
         }
+    }
+
+    static getCurrentDate() {
+        const today = format(new Date(new Date()), "MMMM d', ' yyyy")
+        console.log(today)
+        return today
     }
 }
 
