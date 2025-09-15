@@ -46,7 +46,8 @@ import { domHandler } from './dom-handler.js'
 
 // Global Vars
 
-const searchInput = document.querySelector('#search')
+const cityInput = document.querySelector('#city')
+const regionInput = document.querySelector('#region')
 const searchForm = document.querySelector('form')
 const unitToggle = document.querySelector('#unit-toggle')
 
@@ -59,6 +60,8 @@ class fetchWeather {
         'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 
     // Note: sunrise/sunset no longer needed. Day/night indicators are indicated in the icon value: https://www.visualcrossing.com/resources/documentation/weather-api/defining-icon-set-in-the-weather-api/
+
+    // TODO: use the date api to get the day of the week from datetime - needed for the 7 day forecast cards
 
     static dataKeys = {
         info: ['resolvedAddress', 'alerts', 'description', 'days'],
@@ -164,12 +167,14 @@ pubSub.on('gotCurrentData', domHandler.displayCurrent)
 
 // _________________________________________________
 
+// _________________________________________________
+
 // Pseudocode - Event Handler
 
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault()
     // Note: will throw an error if you call requestHandler.location(inputVal) because getters and setters behave like variables, not functions. To assign a new value to location, see below
-    requestHandler.location = searchInput.value
+    requestHandler.location = [cityInput.value, regionInput.value]
     requestHandler.location
     fetchWeather.fetchData()
 })
