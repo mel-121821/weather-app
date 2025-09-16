@@ -1,7 +1,4 @@
 // dom-handler.js
-
-// Pseudocode - DOM class
-// TODO: Import reqest-handler
 import { format } from 'date-fns'
 import { requestHandler } from './request-handler'
 
@@ -10,8 +7,9 @@ const main = document.querySelector('.main')
 const currentLocation = document.querySelector('.location > p')
 const currentDate = document.querySelector('.date > p')
 const currentTemp = document.querySelector('.temp > p > span.val')
-const currentConditions = document.querySelector('.conditions > p')
+const currentConditions = document.querySelector('.conditions .para > p')
 const currentPrecip = document.querySelector('.precip .percent .val')
+const currentPrecipIcon = document.querySelector('.precip .icon img')
 const currentDescription = document.querySelector('.description > p')
 
 class domHandler {
@@ -31,13 +29,14 @@ class domHandler {
 
     // Note: assigning a string to textContent erases the existing content of the element, including the span. https://stackoverflow.com/questions/75430221/im-not-seeing-span-tags-in-dom-when-adding-them-via-javascript-loop
 
-    static displayCurrent(data) {
+    static async displayCurrent(data) {
         console.log(currentTemp)
+        currentDate.textContent = domHandler.getCurrentDate()
         currentLocation.textContent = data.resolvedAddress
         currentTemp.textContent = data.temp
-        currentDate.textContent = domHandler.getCurrentDate()
         currentConditions.textContent = data.conditions
         currentPrecip.textContent = data.precip
+        currentPrecipIcon.src = await domHandler.setCurrentPrecipIcon(data)
         currentDescription.textContent = data.description
     }
 
@@ -55,9 +54,28 @@ class domHandler {
         }
     }
 
+    static async setCurrentPrecipIcon(data) {
+        const iconName = data.preciptype
+        let iconSrc
+        console.log(iconName)
+        try {
+            const precipIcon = await import(
+                `../icon/preciptype/${iconName[0]}.svg`
+            )
+            iconSrc = precipIcon.default
+        } catch {
+            console.log('No matching icon, use raindrop')
+            const defaultPrecipIcon = await import(
+                `../icon/preciptype/rain.svg`
+            )
+            iconSrc = defaultPrecipIcon.default
+        }
+        return iconSrc
+    }
+
     static getCurrentDate() {
-        const today = format(new Date(new Date()), "MMMM d', ' yyyy")
-        console.log(today)
+        const today = format(new Date(new Date()), "EEEE', ' MMMM d', ' yyyy")
+        console.log(new Date().toISOString().substring(0, 10))
         return today
     }
 }
