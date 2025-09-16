@@ -33,24 +33,24 @@ Artist: Lum3n
 Url: https://www.pexels.com/photo/macro-shot-photography-of-water-drops-1028600/
 
 Name: fog.jpg
-Artist: Jenna Anderson
-Url: https://unsplash.com/photos/green-tree-on-brown-field-at-daytime-UylXHkdG42s
-
-Name: fog2.jpg
 Artist: Dominik Hofbauer
 Url: https://unsplash.com/photos/white-and-black-boat-on-water-during-sunset-TueNuRlbHYI
 
 Name: wind.jpg
-Artist: Katarzyna Kos
-Url: https://unsplash.com/photos/wheat-field-under-clear-blue-sky-sCFKb-7K130
+Artist: Ralph Olazo
+Url: https://unsplash.com/photos/wind-turbines-on-gray-sand-near-body-of-water-during-daytime-TxsU_3V7di4
 
 Name: cloudy.jpg
 Artist: Barry Simon
 Url: https://unsplash.com/photos/selective-focus-photography-of-gray-clouds-4C6Rp23RjnE
 
-Name: partly-cloudy.jpg
+Name: partly-cloudy-day.jpg
 Artist: Miguel Á. Padriñán
 Url: https://www.pexels.com/photo/white-clouds-on-blue-sky-19670/
+
+Name: partly-cloudy-night.jpg
+Artist: Ahmad Pishnamazi
+Url: https://unsplash.com/photos/a-full-moon-is-seen-through-the-clouds-Dohl6IftZMg
 
 ---
 
