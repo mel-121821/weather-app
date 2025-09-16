@@ -70,6 +70,8 @@ class fetchWeather {
             'icon',
             'datetime',
             'temp',
+            'tempmin',
+            'tempmax',
             'precip',
             'precipprob',
             'preciptype',
