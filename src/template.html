@@ -39,19 +39,31 @@
                     <div class="location">
                         <p></p>
                     </div>
+                    <!-- Use the following html instead of temp div if you want to insert an icon into current weather display -->
+                    <!-- <div class="container">
+                        <div class="icon">
+                            <img src="../icon/conditions/cloudy.svg" alt="">
+                        </div>
+                        <div class="temp">
+                            <p>
+                                <span class="val"></span>
+                                <span class="units">&#8451;</span>
+                            </p>
+                        </div>
+                    </div> -->
                     <div class="temp">
                         <p>
                             <span class="val"></span>
                             <span class="units">&#8451;</span>
                         </p>
                     </div>
-                    <div class="conditions-wrapper">
-                        <div class="conditions">
+                    <div class="conditions">
+                        <div class="para">
                             <p></p>
                         </div>
                         <div class="precip">
                             <div class="icon">
-                                <img class="svg icon" src="../icon/water-drop.svg" alt="Water drop icon"/>
+                                <img src="../icon/preciptype/rain.svg" alt="Current precipitation icon">
                             </div>
                             <div class="percent">
                                 <p>
@@ -70,10 +82,39 @@
                 temp, conditions, icon, datetime, precip, precipprob, preciptype -->
                 <div class="weather-display">
                     <div class="day one">
-                        <div class="day-name">
-                            <p></p>
+                        <div class="content">
+                            <div class="weekday">
+                                <p>Wednesday</p>
+                            </div>
+                            <div class="group-1">
+                                <div class="icon">
+                                    <img src="../icon/conditions/clear-day.svg" alt="">
+                                </div>
+                                <div class="group-2">
+                                    <div class="temp">
+                                        <p>
+                                            <span class="val">22</span>
+                                            <span class="units">&#8451;</span>
+                                        </p>
+                                    </div>
+                                    <div class="precip">
+                                        <div class="precip-icon">
+                                            <img src="../icon/preciptype/rain.svg" alt="Type of precipitation">
+                                        </div>
+                                        <div class="percent">
+                                            <p>
+                                                <span class="val">60</span><span class="unit">%</span>
+                                            </p>
+                                        </div>
+                                        
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="conditions">
+                                <p>Partly cloudy with a chance of showers</p>
+                            </div>                           
                         </div>
-                        <div class="temp"></div>
                     </div>
                     <div class="day two"></div>
                     <div class="day three"></div>
