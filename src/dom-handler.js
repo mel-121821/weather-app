@@ -8,6 +8,7 @@ import { requestHandler } from './request-handler'
 const currentDate = document.querySelector('.date > p')
 const allUnitDisplays = document.querySelectorAll('span.units')
 const main = document.querySelector('.main')
+const allWeatherIcons = document.querySelectorAll('.weather-icon')
 
 // Current weather display
 const current_Location = document.querySelector('.location > p')
@@ -16,13 +17,15 @@ const current_Conditions = document.querySelector('.conditions .para > p')
 const current_PrecipPercentage = document.querySelector(
     '.current .precip .percent .val',
 )
-const current_PrecipIcon = document.querySelector('.precip .icon img')
+const current_PrecipIcon = document.querySelector('.current .weather-icon')
 const current_Description = document.querySelector('.description > p')
 
 // 7 day forcast display
 const dayOfWeek = document.querySelectorAll('.weekday p')
-const forcast_ConditionsIcon = document.querySelectorAll('.group-1 .icon img')
-const forcast_PrecipIcon = document.querySelectorAll('.precip-icon img')
+const forcast_ConditionsIcon = document.querySelectorAll(
+    '.group-1 .conditions-icon',
+)
+const forcast_PrecipIcon = document.querySelectorAll('.group-2 .precip-icon')
 const forcast_PrecipPercentage = document.querySelectorAll(
     '.group-2 .precip .val',
 )
@@ -43,26 +46,6 @@ class domHandler {
         }
     }
 
-    // Note: assigning a string to textContent erases the existing content of the element, including the span. https://stackoverflow.com/questions/75430221/im-not-seeing-span-tags-in-dom-when-adding-them-via-javascript-loop
-
-    static async displayCurrent(data) {
-        console.log(current_Temp)
-        currentDate.textContent = domHandler.getCurrentDate()
-        current_Location.textContent = data.resolvedAddress
-        current_Temp.textContent = data.temp
-        current_Conditions.textContent = data.conditions
-        current_PrecipPercentage.textContent = data.precip
-        current_PrecipIcon.src = await domHandler.setPrecipIcon(data)
-        current_Description.textContent = data.description
-    }
-
-    static displayForcast(data) {
-        data.forEach((day, index) => {
-            // console.log(`Day ${index} = ${day.datetime}`)
-            dayOfWeek[index].textContent = domHandler.getWeekday(day.datetime)
-        })
-    }
-
     static async updateBgImg(data) {
         const iconName = data.icon
         try {
@@ -76,23 +59,71 @@ class domHandler {
         }
     }
 
-    static async setPrecipIcon(data) {
-        const iconName = data.preciptype
-        let iconSrc
-        try {
-            const precipIcon = await import(
-                `../icon/preciptype/${iconName[0]}.svg`
-            )
-            iconSrc = precipIcon.default
-        } catch {
-            console.log('No matching icon, use raindrop')
-            const defaultPrecipIcon = await import(
-                `../icon/preciptype/rain.svg`
-            )
-            iconSrc = defaultPrecipIcon.default
-        }
-        return iconSrc
+    // Note: assigning a string to textContent erases the existing content of the element, including the span. https://stackoverflow.com/questions/75430221/im-not-seeing-span-tags-in-dom-when-adding-them-via-javascript-loop
+
+    static async displayCurrent(data) {
+        console.log(current_Temp)
+        const iconType = 'preciptype'
+        currentDate.textContent = domHandler.getCurrentDate()
+        current_Location.textContent = data.resolvedAddress
+        current_Temp.textContent = data.temp
+        current_Conditions.textContent = data.conditions
+        current_PrecipPercentage.textContent = data.precip
+        console.log('Setting precip icon on current')
+        current_PrecipIcon.innerHTML = ''
+        current_PrecipIcon.appendChild(
+            await domHandler.setIcon(iconType, data.preciptype),
+        )
+        current_Description.textContent = data.description
     }
+
+    static displayForcast(data) {
+        data.forEach((day, index) => {
+            // console.log(`Day ${index} = ${day.datetime}`)
+            dayOfWeek[index].textContent = domHandler.getWeekday(day.datetime)
+            forcast_PrecipPercentage[index].textContent = day.precipprob
+            forcast_ConditionsPara[index].textContent = day.conditions
+        })
+    }
+
+    static async displayForcastIcons(data) {
+        const iconTypes = ['conditions', 'preciptype']
+        data.forEach(async (day, index) => {
+            const conditionsIcon = await domHandler.setIcon(
+                iconTypes[0],
+                day.icon,
+            )
+            const precipIcon = await domHandler.setIcon(
+                iconTypes[1],
+                day.preciptype,
+            )
+            console.log(forcast_ConditionsIcon[index])
+            forcast_ConditionsIcon[index].innerHTML = ''
+            forcast_ConditionsIcon[index].appendChild(conditionsIcon)
+            forcast_PrecipIcon[index].innerHTML = ''
+            forcast_PrecipIcon[index].appendChild(precipIcon)
+        })
+    }
+
+    static async setIcon(iconType, iconName) {
+        // add logic to check if icon name is an array
+        const img = document.createElement('img')
+        console.log(iconName)
+        // let iconSrc
+        try {
+            const icon = await import(`../icon/${iconType}/${iconName}.svg`)
+            img.src = icon.default
+        } catch {
+            console.log('No matching icon, use default')
+            const defaultIcon = await import(`../icon/${iconType}/default.svg`)
+            console.log(defaultIcon)
+            img.src = defaultIcon.default
+        }
+        console.log(img)
+        return img
+    }
+
+    static clearAllIcons() {}
 
     static getCurrentDate() {
         const today = format(new Date(new Date()), "EEEE', ' MMMM d', ' yyyy")
@@ -106,7 +137,6 @@ class domHandler {
 
     static getWeekday(data) {
         const formattedDate = domHandler.formatDateData(data)
-        console.log(formattedDate)
         const date = format(new Date(formattedDate), 'EEEE')
         return date
     }
