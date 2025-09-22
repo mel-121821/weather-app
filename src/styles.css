@@ -493,6 +493,14 @@ html {
     padding: 0px 50px 25px 50px;
 }
 
+.forcast .loader {
+    width: 60%;
+}
+
+.forcast .precip .loader {
+    width: 80%;
+}
+
 .forcast .weather-display {
     display: flex;
     justify-content: space-between;
@@ -511,7 +519,7 @@ html {
 
 .content {
     display: grid;
-    grid-template-rows: 20% 52% 28%;
+    grid-template-rows: 20% 55% 25%;
     width: 160px;
     height: 90%;
 }
@@ -525,9 +533,16 @@ html {
     color: white;
 }
 
+/* DONE: investigate if the issue of loader not displaying is because it is a grid item and I am currently using flex-boxes */
+/* When icons were inserted out of their normal alignment, they may have been displayed because they were not in a flexbox */
+
+/* Verdict: The icon re-appeared when group-1 was changed to grid, however, it still works when weather-icon is a flexbox... */
+
 .forcast .group-1 {
     grid-area: 2 / 1 / 3 / 2;
-    display: flex;
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     padding: 0px 2px;
     justify-content: space-around;
     color: white;
@@ -535,6 +550,7 @@ html {
 }
 
 .forcast .group-1 .weather-icon {
+    grid-area: 1 / 1 / 2 / 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -547,6 +563,8 @@ html {
 
 .forcast .group-2 {
     display: flex;
+    /* display: grid;
+    grid-template-rows: 52% 48%; */
     flex-direction: column;
     justify-content: center;
 }
@@ -570,7 +588,9 @@ html {
 }
 
 .forcast .group-2 .precip {
-    display: flex;
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: 32px 1fr;
     font-size: 1.2rem;
     align-items: flex-start;
     margin-bottom: -6px;
