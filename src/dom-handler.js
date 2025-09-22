@@ -8,7 +8,6 @@ import { requestHandler } from './request-handler'
 const currentDate = document.querySelector('.date > p')
 const allUnitDisplays = document.querySelectorAll('span.units')
 const main = document.querySelector('.main')
-const allWeatherIcons = document.querySelectorAll('.weather-icon')
 
 // Current weather display
 const current_Location = document.querySelector('.location > p')
@@ -61,20 +60,21 @@ class domHandler {
 
     // Note: assigning a string to textContent erases the existing content of the element, including the span. https://stackoverflow.com/questions/75430221/im-not-seeing-span-tags-in-dom-when-adding-them-via-javascript-loop
 
-    static async displayCurrent(data) {
-        console.log(current_Temp)
-        const iconType = 'preciptype'
-        currentDate.textContent = domHandler.getCurrentDate()
+    static displayCurrent(data) {
         current_Location.textContent = data.resolvedAddress
         current_Temp.textContent = data.temp
         current_Conditions.textContent = data.conditions
-        current_PrecipPercentage.textContent = data.precip
+        current_PrecipPercentage.textContent = data.precipprob
+        current_Description.textContent = data.description
+    }
+
+    static async displayCurrentIcon(data) {
+        const iconType = 'preciptype'
         console.log('Setting precip icon on current')
         current_PrecipIcon.innerHTML = ''
         current_PrecipIcon.appendChild(
             await domHandler.setIcon(iconType, data.preciptype),
         )
-        current_Description.textContent = data.description
     }
 
     static displayForcast(data) {
@@ -97,7 +97,7 @@ class domHandler {
                 iconTypes[1],
                 day.preciptype,
             )
-            console.log(forcast_ConditionsIcon[index])
+            // DONE: troubleshoot issue with loader not showing up before icons are loaded (is not an issue for current, only forcast)
             forcast_ConditionsIcon[index].innerHTML = ''
             forcast_ConditionsIcon[index].appendChild(conditionsIcon)
             forcast_PrecipIcon[index].innerHTML = ''
@@ -106,7 +106,7 @@ class domHandler {
     }
 
     static async setIcon(iconType, iconName) {
-        // add logic to check if icon name is an array
+        // TODO: add logic to check if icon name is an array
         const img = document.createElement('img')
         console.log(iconName)
         // let iconSrc
@@ -115,19 +115,19 @@ class domHandler {
             img.src = icon.default
         } catch {
             console.log('No matching icon, use default')
-            const defaultIcon = await import(`../icon/${iconType}/default.svg`)
-            console.log(defaultIcon)
+            const defaultIcon = await import(`../icon/${iconType}/rain.svg`)
             img.src = defaultIcon.default
         }
-        console.log(img)
         return img
     }
-
-    static clearAllIcons() {}
 
     static getCurrentDate() {
         const today = format(new Date(new Date()), "EEEE', ' MMMM d', ' yyyy")
         return today
+    }
+
+    static displayCurrentDate() {
+        currentDate.textContent = domHandler.getCurrentDate()
     }
 
     // Note: code doesn't work properly when the first character in the month is a '0' it causes the outputted day to be decreased by 1
@@ -161,20 +161,3 @@ export { domHandler }
 // function updateDisplay()
 // have subscribed to return of the obj
 // call all fns that manipulate the DOM
-
-// function setBgImg()
-// get icon name from returned obj
-// use name of icon to search visual assets obj
-// display corresponding img
-
-// function displayCurrent()
-// get data from currentWeather fetch obj
-// populate display
-
-// function display7DayForcast()
-// get data from 7DayForcast fetch obj
-// populate display
-
-// TODO: Research dynamic imports for info on how to implement
-// function emojiHandler()
-// ???
