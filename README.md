@@ -1,30 +1,30 @@
 # weather-app
 
-## Instructions:
+### Instructions:
 
-[x] Set up a blank HTML document with the appropriate links to your JavaScript and CSS files.
+1. [x] Set up a blank HTML document with the appropriate links to your JavaScript and CSS files.
 
-[x] Write the functions that hit the API. You’re going to want functions that can take a location and return the weather data for that location. For now, just console.log() the information.
+2. [x] Write the functions that hit the API. You’re going to want functions that can take a location and return the weather data for that location. For now, just console.log() the information.
 
-[x] Write the functions that process the JSON data you’re getting from the API and return an object with only the data you require for your app.
+3. [x] Write the functions that process the JSON data you’re getting from the API and return an object with only the data you require for your app.
 
-[x] Set up a form that will let users input their location and will fetch the weather info (still just console.log() it).
+4. [x] Set up a form that will let users input their location and will fetch the weather info (still just console.log() it).
 
-[x] Display the information on your webpage!
+5. [x] Display the information on your webpage!
 
-[x] While you don’t have to, if you wish to display weather icons then there can be a lot of them to import, so have a look at the dynamic import() function. Unlike plain template strings without an import, Webpack can read dynamic imports and still bundle all the relevant assets.
+6. [x] While you don’t have to, if you wish to display weather icons then there can be a lot of them to import, so have a look at the dynamic import() function. Unlike plain template strings without an import, Webpack can read dynamic imports and still bundle all the relevant assets.
 
-[x] Add any styling you like!
+7. [x] Add any styling you like!
 
-[x] Optional: add a ‘loading’ component that displays from the time the form is submitted until the information comes back from the API. Use DevTools to simulate network speeds.
+8. [x] Optional: add a ‘loading’ component that displays from the time the form is submitted until the information comes back from the API. Use DevTools to simulate network speeds.
 
-[] Push to GitHub and share your solution!
+9. [] Push to GitHub and share your solution!
 
 ---
 
-## Images:
+### Images:
 
-### Icon set 1:
+#### Icon set 1:
 
 Name: snow.jpg\
 Artist: Aaron Burden\
@@ -62,7 +62,7 @@ Name: clear-night.jpg\
 Artist: Kai Pilger\
 URL: https://www.pexels.com/photo/cluster-of-stars-1341279/
 
-### Icon set 2:
+#### Icon set 2:
 
 Name: snow-showers-day.jpg\
 Artist: Lan Gao\
@@ -82,7 +82,7 @@ URL: https://www.freepik.com/free-photo/rain-drops-window_1273693.htm#fromView=s
 
 ---
 
-## Tools:
+### Tools:
 
 Pull color palette from an image:
 https://coolors.co/image-picker
@@ -98,7 +98,7 @@ https://css-loaders.com/spinner/
 
 ---
 
-## Resources:
+### Resources:
 
 Assistance with ESLint and Prettier:\
 https://dev.to/emmanuelo/guide-to-setting-up-prettier-airbnb-eslint-and-husky-for-your-next-project-17ge
@@ -145,7 +145,7 @@ https://stackoverflow.com/questions/71457844/i-want-to-print-index-of-all-elemen
 
 ---
 
-## Notes and Takeaways:
+### Notes and Takeaways:
 
 Public instance fields are recreated on every instance (use these if each instance has its own unique data)
 
@@ -158,13 +158,17 @@ Assigning a string to textContent erases the existing content of the element, in
 
 ---
 
-## Bug Fixes:
+### Bug Fixes:
 
-Bug: when working with `date("DD-MM-YYYY")`, the outputted day is decreased by 1 when the first character in month is a '0'/
+BUG: when working with `date("DD-MM-YYYY")`, the outputted day is decreased by 1 when the first character in month is a '0'/
 Ex. 1: Date submitted: "2025-09-19" becomes "2025-09-18"\
 Ex. 2: Date submitted: "2025-04-07" becomes "2025-04-06"\
-This does not seem to be an issue with day characters\
+--This does not seem to be an issue with day characters--\
+(Later found that this is also an issue with DD characters)
 Solution: create a fn() to remove char 5 if it is a 0
+
+BUG: When MM changed from 09 to 10 the date output was again decreased by one.\
+Solution: tried removing the leading "0" from the DD chars and the issue was resolved
 
 Bug: loader icon not displaying\
 Notes: loader may not be displayed because it is a grid item and group-1 and group-2 were flex-boxes\
