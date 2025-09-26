@@ -143,6 +143,9 @@ https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-lo
 map() as an alternative to forEach\
 https://stackoverflow.com/questions/71457844/i-want-to-print-index-of-all-elements-without-using-foreach-or-filter-or-map
 
+README.md formatting:
+https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#headings
+
 ---
 
 ### Notes and Takeaways:
@@ -160,10 +163,11 @@ Assigning a string to textContent erases the existing content of the element, in
 
 ### Bug Fixes:
 
-BUG: when working with `date("DD-MM-YYYY")`, the outputted day is decreased by 1 when the first character in month is a '0'/
+BUG: when working with `date("DD-MM-YYYY")`, the outputted day is decreased by 1 when the first character in month is a '0'\
 Ex. 1: Date submitted: "2025-09-19" becomes "2025-09-18"\
 Ex. 2: Date submitted: "2025-04-07" becomes "2025-04-06"\
---This does not seem to be an issue with day characters--\
+--This does not seem to be an issue with day characters--
+
 (Later found that this is also an issue with DD characters)
 Solution: create a fn() to remove char 5 if it is a 0
 
