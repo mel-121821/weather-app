@@ -21,6 +21,7 @@ const current_Description = document.querySelector('.description > p')
 
 // 7 day forcast display
 const dayOfWeek = document.querySelectorAll('.weekday p')
+const forcast_Temp = document.querySelectorAll('.group-2 .temp .val')
 const forcast_ConditionsIcon = document.querySelectorAll(
     '.group-1 .conditions-icon',
 )
@@ -45,10 +46,18 @@ class domHandler {
         }
     }
 
+    // BUG: at some point after img import was changed to be hard coded, catch block stopped running, even when import in try block was not found
+    // First fix attempt: switch back to using iconName to get img url, and see if anything changes.
+    // Solution: try/catch blocks behaved normally after switching. Not sure why at this point. Will monitor for abnormal behaviour for now
+    // Thoughts: wondering if the isse is that the hardcoded url represented an existing but incomplete url (partly-cloudy vs. partly cloudy-day or partly-cloudy-night) > proven inaccurate after testing. Catch block is skipped regardless of url format
+
+    // TODO: Do some more research on try/catch blocks
+
     static async updateBgImg(data) {
         const iconName = data.icon
         try {
             const bgImg = await import(`../img/${iconName}.jpg`)
+            // const bgImg = await import(`../img/showers-night.jpg`)
             console.log(bgImg.default)
             main.style.backgroundImage = `url("${bgImg.default}")`
         } catch {
@@ -81,6 +90,7 @@ class domHandler {
         data.forEach((day, index) => {
             // console.log(`Day ${index} = ${day.datetime}`)
             dayOfWeek[index].textContent = domHandler.getWeekday(day.datetime)
+            forcast_Temp[index].textContent = day.temp
             forcast_PrecipPercentage[index].textContent = day.precipprob
             forcast_ConditionsPara[index].textContent = day.conditions
         })
@@ -97,7 +107,6 @@ class domHandler {
                 iconTypes[1],
                 day.preciptype,
             )
-            // DONE: troubleshoot issue with loader not showing up before icons are loaded (is not an issue for current, only forcast)
             forcast_ConditionsIcon[index].innerHTML = ''
             forcast_ConditionsIcon[index].appendChild(conditionsIcon)
             forcast_PrecipIcon[index].innerHTML = ''
@@ -106,9 +115,8 @@ class domHandler {
     }
 
     static async setIcon(iconType, iconName) {
-        // TODO: add logic to check if icon name is an array
         const img = document.createElement('img')
-        console.log(iconName)
+        // console.log(iconName)
         // let iconSrc
         try {
             const icon = await import(`../icon/${iconType}/${iconName}.svg`)
@@ -135,24 +143,46 @@ class domHandler {
     // Ex. 2: Date submitted: "2025-04-07" becomes "2025-04-06"
     // This does not seem to be an issue with day characters
 
+    // BUG FOUND: New issue with date. When MM changes from 09 to 10 the date output is again decreased by one.
+    // Solution: tried removing the leading "0" from the DD chars and the issue was resolved
+    // TODO: add additional logic to formatDateData to remove leading "0"s from DD as well as MM
+
     static getWeekday(data) {
         const formattedDate = domHandler.formatDateData(data)
         const date = format(new Date(formattedDate), 'EEEE')
+        console.log(date)
         return date
     }
 
     static formatDateData(data) {
-        let formattedDate = data
-        if (data.charAt(5) === '0') {
-            formattedDate = data
+        console.log(data)
+        let formattedDate = this.formatDD(this.formatMM(data))
+        console.log(formattedDate)
+        return formattedDate
+    }
+
+    static formatMM(date) {
+        let formatted = date
+        if (formatted.charAt(5) === '0') {
+            formatted = formatted
                 .split('')
                 .slice(0, 5)
                 .join('')
-                .concat(data.split('').slice(-4).join(''))
-        } else {
-            console.log('date was not modified')
+                .concat(formatted.split('').slice(-4).join(''))
         }
-        return formattedDate
+        return formatted
+    }
+
+    static formatDD(date) {
+        let formatted = date
+        if (formatted.at(-2) === '0') {
+            formatted = formatted
+                .split('')
+                .slice(0, -2)
+                .join('')
+                .concat(formatted.split('').slice(-1).join(''))
+        }
+        return formatted
     }
 }
 
