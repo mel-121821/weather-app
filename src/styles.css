@@ -136,14 +136,7 @@ table {
     border-spacing: 0;
 }
 
-/*__________Colour Scheme__________*/
-
 /*__________General__________*/
-
-/* Use this to find overflow issues */
-/* * {
-    outline: 1px solid #f00 !important;
-} */
 
 body {
     background-color: aquamarine;
@@ -581,6 +574,7 @@ html {
     justify-content: center;
     margin-top: 4px;
     font-size: 1.1rem;
+    text-align: center;
 }
 
 .forcast .conditions p {
