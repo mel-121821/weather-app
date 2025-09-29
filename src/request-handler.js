@@ -1,7 +1,7 @@
 // request-handler.js
 
 class requestHandler {
-    // (DONE) units already exist in searchParams - may move getter/setter to fetchWeather class or have setter set the units from here
+    // DONE: units already exist in searchParams - may move getter/setter to fetchWeather class or have setter set the units from here
 
     static currentUnits = 'metric'
 
@@ -22,8 +22,8 @@ class requestHandler {
     }
 
     static set location(inputs) {
-        // TODO: fix to accept city/provice/country
-        // TODO: add code to handle undefined values
+        // DONE: fix to accept city/provice/country
+        // DONE: add code to handle undefined values > made city and region required fields instead
         console.log(inputs)
         this.currentLocation = inputs.filter(Boolean).join(', ')
         console.log(this.currentLocation)
