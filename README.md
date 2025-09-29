@@ -163,17 +163,35 @@ Assigning a string to textContent erases the existing content of the element, in
 
 ### Bug Fixes:
 
-BUG: when working with `date("DD-MM-YYYY")`, the outputted day is decreased by 1 when the first character in month is a '0'\
-Ex. 1: Date submitted: "2025-09-19" becomes "2025-09-18"\
-Ex. 2: Date submitted: "2025-04-07" becomes "2025-04-06"\
---This does not seem to be an issue with day characters--
+**BUG:** when working with `date("DD-MM-YYYY")`, the outputted day is decreased by 1 when the first character in month is a '0'\
 
-(Later found that this is also an issue with DD characters)
-Solution: create a fn() to remove char 5 if it is a 0
+**Ex. 1:** Date submitted: "2025-09-19" becomes "2025-09-18"\
+**Ex. 2:** Date submitted: "2025-04-07" becomes "2025-04-06"\
+**SOLUTION:** create a fn() to remove char 5 if it is a 0
 
-BUG: When MM changed from 09 to 10 the date output was again decreased by one.\
-Solution: tried removing the leading "0" from the DD chars and the issue was resolved
+~~This does not seem to be an issue with day characters~~\
+(Later found that this is also an issue with DD characters)\
 
-Bug: loader icon not displaying\
+**BUG:** When MM changed from 09 to 10 the date output was again decreased by one.\
+**SOLUTION:** tried removing the leading "0" from the DD chars and the issue was resolved
+
+**BUG:** loader icon not displaying\
 Notes: loader may not be displayed because it is a grid item and group-1 and group-2 were flex-boxes\
-Solution: The icon re-appeared when group-1 was changed to grid, the fact that weather-icon is a flexbox does not seem to cause an issue
+**SOLUTION:** The icon re-appeared when group-1 was changed to grid, the fact that weather-icon is a flexbox does not seem to cause an issue
+
+**BUG:** When searching for bg images, I would check them by hard-coding the img path into the url instead of getting the name from fetch data.
+
+**Ex.** `const bgImg = await import(`../img/showers-night.jpg`)`\
+**Instead of:** `const bgImg = await import(`../img/${iconName}.jpg`)`
+
+At some point after img import was changed to be hard coded, catch block stopped running, even when import in try block was not found
+
+**Fix attempt:** wondered if the issue was that the hardcoded url represented an existing but incomplete url when testing
+
+**Ex:** `partly-cloudy.jpg` vs. `partly cloudy-day.jpg` or `partly-cloudy-night.jpg`)
+
+**Outcome:** This was proven inaccurate after testing. Catch block is skipped regardless of url format
+
+**Fix attempt:** switch back to using iconName to get img url, and see if anything changes.
+
+**Solution??:** try/catch blocks behaved normally after switching. Not sure why at this point. The issue did not resurface for the remainder of the project as long as the iconName from fetch data was used.
