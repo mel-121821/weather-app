@@ -1,8 +1,6 @@
 // request-handler.js
 
 class requestHandler {
-    // DONE: units already exist in searchParams - may move getter/setter to fetchWeather class or have setter set the units from here
-
     static currentUnits = 'metric'
 
     static currentLocation = 'Ottawa, ON, Canada'
