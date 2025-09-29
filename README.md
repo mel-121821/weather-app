@@ -18,7 +18,7 @@
 
 8. [x] Optional: add a ‘loading’ component that displays from the time the form is submitted until the information comes back from the API. Use DevTools to simulate network speeds.
 
-9. [] Push to GitHub and share your solution!
+9. [x] Push to GitHub and share your solution!
 
 ---
 
