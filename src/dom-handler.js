@@ -6,7 +6,9 @@ import { requestHandler } from './request-handler'
 
 // General
 const currentDate = document.querySelector('.date > p')
-const allUnitDisplays = document.querySelectorAll('span.units')
+const allUnitDisplays = document.querySelectorAll(
+    'span.units, span.toggle-label',
+)
 const main = document.querySelector('.main')
 
 // Current weather display
@@ -58,7 +60,7 @@ class domHandler {
         try {
             const bgImg = await import(`../img/${iconName}.jpg`)
             // const bgImg = await import(`../img/showers-night.jpg`)
-            console.log(bgImg.default)
+            // console.log(bgImg.default)
             main.style.backgroundImage = `url("${bgImg.default}")`
         } catch {
             console.log(`404 ${iconName} not found. Use default image instead`)
@@ -79,7 +81,7 @@ class domHandler {
 
     static async displayCurrentIcon(data) {
         const iconType = 'preciptype'
-        console.log('Setting precip icon on current')
+        // console.log('Setting precip icon on current')
         current_PrecipIcon.innerHTML = ''
         current_PrecipIcon.appendChild(
             await domHandler.setIcon(iconType, data.preciptype),
@@ -116,10 +118,12 @@ class domHandler {
 
     static async setIcon(iconType, iconName) {
         const img = document.createElement('img')
-        // console.log(iconName)
+        iconName = this.getIconFromArray(iconName)
+        console.log(iconName)
         // let iconSrc
         try {
             const icon = await import(`../icon/${iconType}/${iconName}.svg`)
+            // const icon = await import(`../icon/conditions/sleet.svg`)
             img.src = icon.default
         } catch {
             console.log('No matching icon, use default')
@@ -127,6 +131,14 @@ class domHandler {
             img.src = defaultIcon.default
         }
         return img
+    }
+
+    static getIconFromArray(iconName) {
+        if (Array.isArray(iconName)) {
+            return iconName[0]
+        } else {
+            return iconName
+        }
     }
 
     static getCurrentDate() {
@@ -145,19 +157,19 @@ class domHandler {
 
     // BUG FOUND: New issue with date. When MM changes from 09 to 10 the date output is again decreased by one.
     // Solution: tried removing the leading "0" from the DD chars and the issue was resolved
-    // TODO: add additional logic to formatDateData to remove leading "0"s from DD as well as MM
+    // DONE: add additional logic to formatDateData (decided to split into 2 fn()s) to remove leading "0"s from DD as well as MM
 
     static getWeekday(data) {
         const formattedDate = domHandler.formatDateData(data)
         const date = format(new Date(formattedDate), 'EEEE')
-        console.log(date)
+        // console.log(date)
         return date
     }
 
     static formatDateData(data) {
-        console.log(data)
+        // console.log(data)
         let formattedDate = this.formatDD(this.formatMM(data))
-        console.log(formattedDate)
+        // console.log(formattedDate)
         return formattedDate
     }
 
@@ -187,7 +199,3 @@ class domHandler {
 }
 
 export { domHandler }
-
-// function updateDisplay()
-// have subscribed to return of the obj
-// call all fns that manipulate the DOM
