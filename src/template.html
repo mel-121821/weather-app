@@ -24,8 +24,8 @@
                 </form>
             </div>
             <div class="units">
+                <span class="toggle-label">&#8451;</span>
                 <label class="toggle">
-                    <span class="toggle-label">Change units:</span>
                     <input id="unit-toggle" class="toggle-checkbox" type="checkbox">
                     <div class="toggle-switch"></div>
                 </label>
@@ -33,24 +33,10 @@
         </div>
         <div class="main">
             <div class="current">
-                <!-- Data to display on current view: 
-                temp, resolvedAddress, conditions description,-->
                 <div class="weather-display">
                     <div class="location">
                         <p></p>
                     </div>
-                    <!-- Use the following html instead of temp div if you want to insert an icon into current weather display -->
-                    <!-- <div class="container">
-                        <div class="icon">
-                            <img src="../icon/conditions/cloudy.svg" alt="">
-                        </div>
-                        <div class="temp">
-                            <p>
-                                <span class="val"></span>
-                                <span class="units">&#8451;</span>
-                            </p>
-                        </div>
-                    </div> -->
                     <div class="temp">
                         <p>
                             <span class="val"></span>
@@ -64,7 +50,6 @@
                         <div class="precip">
                             <div class="weather-icon">
                                 <div class="loader img"></div>
-                                <!-- <img src="../icon/preciptype/ice.svg" alt="Current precipitation icon"> -->
                             </div>
                             <div class="percent">
                                 <p>
@@ -79,8 +64,6 @@
                 </div>
             </div>
             <div class="forcast">
-                <!-- Data to display on current view: 
-                temp, conditions, icon, datetime, precip, precipprob, preciptype -->
                 <div class="weather-display">
                     <div class="day one">
                         <div class="content">
