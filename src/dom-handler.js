@@ -36,7 +36,6 @@ const forcast_ConditionsPara = document.querySelectorAll('.forcast .conditions')
 class domHandler {
     static changeUnits() {
         const units = requestHandler.units
-        console.log(allUnitDisplays)
         if (units === 'metric') {
             for (const disp of allUnitDisplays) {
                 disp.innerHTML = '&#8451;'
@@ -48,18 +47,16 @@ class domHandler {
         }
     }
 
-    // TODO: Do some more research on try/catch blocks
-
     static async updateBgImg(data) {
         const iconName = data.icon
         try {
             const bgImg = await import(`../img/${iconName}.jpg`)
-            // const bgImg = await import(`../img/showers-night.jpg`)
-            // console.log(bgImg.default)
             main.style.backgroundImage = `url("${bgImg.default}")`
         } catch {
-            console.log(`404 ${iconName} not found. Use default image instead`)
-            const defaultImg = await import(`../img/fog.jpg`)
+            console.log(
+                `404 ${iconName} not found. Using default image instead`,
+            )
+            const defaultImg = await import(`../img/clear-day.jpg`)
             main.style.backgroundImage = `url("${defaultImg.default}")`
         }
     }
@@ -74,7 +71,6 @@ class domHandler {
 
     static async displayCurrentIcon(data) {
         const iconType = 'preciptype'
-        // console.log('Setting precip icon on current')
         current_PrecipIcon.innerHTML = ''
         current_PrecipIcon.appendChild(
             await domHandler.setIcon(iconType, data.preciptype),
@@ -83,7 +79,6 @@ class domHandler {
 
     static displayForcast(data) {
         data.forEach((day, index) => {
-            // console.log(`Day ${index} = ${day.datetime}`)
             dayOfWeek[index].textContent = domHandler.getWeekday(day.datetime)
             forcast_Temp[index].textContent = day.temp
             forcast_PrecipPercentage[index].textContent = day.precipprob
@@ -112,11 +107,8 @@ class domHandler {
     static async setIcon(iconType, iconName) {
         const img = document.createElement('img')
         iconName = this.getIconFromArray(iconName)
-        console.log(iconName)
-        // let iconSrc
         try {
             const icon = await import(`../icon/${iconType}/${iconName}.svg`)
-            // const icon = await import(`../icon/conditions/sleet.svg`)
             img.src = icon.default
         } catch {
             console.log('No matching icon, use default')
@@ -146,14 +138,11 @@ class domHandler {
     static getWeekday(data) {
         const formattedDate = domHandler.formatDateData(data)
         const date = format(new Date(formattedDate), 'EEEE')
-        // console.log(date)
         return date
     }
 
     static formatDateData(data) {
-        // console.log(data)
         let formattedDate = this.formatDD(this.formatMM(data))
-        // console.log(formattedDate)
         return formattedDate
     }
 
