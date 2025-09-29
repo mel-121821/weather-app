@@ -153,6 +153,7 @@ searchForm.addEventListener('submit', (e) => {
     requestHandler.location = [cityInput.value, regionInput.value]
     requestHandler.location
     fetchWeather.fetchData()
+    searchForm.reset()
 })
 
 unitToggle.addEventListener('click', () => {
