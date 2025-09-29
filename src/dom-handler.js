@@ -111,7 +111,6 @@ class domHandler {
             const icon = await import(`../icon/${iconType}/${iconName}.svg`)
             img.src = icon.default
         } catch {
-            console.log('No matching icon, use default')
             const defaultIcon = await import(`../icon/${iconType}/rain.svg`)
             img.src = defaultIcon.default
         }
