@@ -181,14 +181,14 @@ Notes: loader may not be displayed because it is a grid item and group-1 and gro
 
 **BUG:** When searching for bg images, I would check them by hard-coding the img path into the url instead of getting the name from fetch data.
 
-**Ex.** `const bgImg = await import(`../img/showers-night.jpg`)`\
-**Instead of:** `const bgImg = await import(`../img/${iconName}.jpg`)`
+**Ex.** `const bgImg = await import('../img/showers-night.jpg')`\
+**Instead of:** `const bgImg = await import('../img/${iconName}.jpg')`
 
 At some point after img import was changed to be hard coded, catch block stopped running, even when import in try block was not found
 
 **Fix attempt:** wondered if the issue was that the hardcoded url represented an existing but incomplete url when testing
 
-**Ex:** `partly-cloudy.jpg` vs. `partly cloudy-day.jpg` or `partly-cloudy-night.jpg`)
+**Ex:** `partly-cloudy.jpg` vs. `partly cloudy-day.jpg`
 
 **Outcome:** This was proven inaccurate after testing. Catch block is skipped regardless of url format
 
