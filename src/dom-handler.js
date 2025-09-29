@@ -48,11 +48,6 @@ class domHandler {
         }
     }
 
-    // BUG: at some point after img import was changed to be hard coded, catch block stopped running, even when import in try block was not found
-    // First fix attempt: switch back to using iconName to get img url, and see if anything changes.
-    // Solution: try/catch blocks behaved normally after switching. Not sure why at this point. Will monitor for abnormal behaviour for now
-    // Thoughts: wondering if the isse is that the hardcoded url represented an existing but incomplete url (partly-cloudy vs. partly cloudy-day or partly-cloudy-night) > proven inaccurate after testing. Catch block is skipped regardless of url format
-
     // TODO: Do some more research on try/catch blocks
 
     static async updateBgImg(data) {
@@ -68,8 +63,6 @@ class domHandler {
             main.style.backgroundImage = `url("${defaultImg.default}")`
         }
     }
-
-    // Note: assigning a string to textContent erases the existing content of the element, including the span. https://stackoverflow.com/questions/75430221/im-not-seeing-span-tags-in-dom-when-adding-them-via-javascript-loop
 
     static displayCurrent(data) {
         current_Location.textContent = data.resolvedAddress
@@ -149,15 +142,6 @@ class domHandler {
     static displayCurrentDate() {
         currentDate.textContent = domHandler.getCurrentDate()
     }
-
-    // Note: code doesn't work properly when the first character in the month is a '0' it causes the outputted day to be decreased by 1
-    // Ex. 1: Date submitted: "2025-09-19" becomes "2025-09-18"
-    // Ex. 2: Date submitted: "2025-04-07" becomes "2025-04-06"
-    // This does not seem to be an issue with day characters
-
-    // BUG FOUND: New issue with date. When MM changes from 09 to 10 the date output is again decreased by one.
-    // Solution: tried removing the leading "0" from the DD chars and the issue was resolved
-    // DONE: add additional logic to formatDateData (decided to split into 2 fn()s) to remove leading "0"s from DD as well as MM
 
     static getWeekday(data) {
         const formattedDate = domHandler.formatDateData(data)
