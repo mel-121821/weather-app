@@ -3,7 +3,7 @@
 class requestHandler {
     static currentUnits = 'metric'
 
-    static currentLocation = 'Ottawa+ON+Canada'
+    static currentLocation = 'Toronto+ON+Canada'
 
     static get units() {
         return this.currentUnits
